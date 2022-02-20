@@ -6,7 +6,7 @@ from matplotlib.animation import FuncAnimation
 # TODO Add Least Squares Regression to this
 
 class gradient_descent:
-    def __init__(self, x: np.array, y, lr=.12, epochs=3000):
+    def __init__(self, x: np.array, y, lr=.1, epochs=3000):
         self.x = x
         self.y = y
         self.n = len(x)
@@ -31,16 +31,38 @@ class gradient_descent:
     
     def gradient_descent(self):
         for i in range(self.epochs):
+            
+            # BATCH
             predicted_y = [self.funct(x) for x in self.x]
             self.m -= self.lr * self.MSE_M(self.x, self.y, predicted_y)
             self.b -= self.lr * self.MSE_B(self.x, self.y, predicted_y)
 
             self.logs.append((self.m, self.b))
             self.mselog.append(self.MSE(self.x, self.y, predicted_y))
+            
+            #STOCHASTIC
+            # sample_size = .1
+
+            # selected_x_index = np.random.choice(self.n, int(self.n*sample_size), replace=True)
+            # selected_x = [self.x[i] for i in selected_x_index]
+            # selected_y = [self.y[i] for i in selected_x_index]
+            # predicted_y = [self.funct(x) for x in selected_x]
+            # self.m -= self.lr * self.MSE_M(selected_x, selected_y, predicted_y)
+            # self.b -= self.lr * self.MSE_B(selected_x, selected_y, predicted_y)
+            # self.logs.append((self.m, self.b))
+            # self.mselog.append(self.MSE(selected_x, selected_y, predicted_y))
+            
+
+            
         return self.m, self.b, self.logs, self.mselog, self.mselog[-1]
 
-X = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=0.5)
-y = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=0.25)
+# BATCH
+X = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
+y = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
+
+# STOCHASTIC
+# X = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=2)
+# y = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
 
 pointsx = X
 pointsy = y
@@ -76,9 +98,10 @@ def animate_frame(i):
     for line in logs[:i]:
         plotmb(line[0], line[1], ax, alpha=.9, color='red', linewidth=.3)
     plotmb(logs[i][0], logs[i][1], ax, color='red', linewidth=2)
+    ax.set_xlabel(f"M: {round(logs[i][0], 2)} B: {round(logs[i][1], 2)} Loss: {round(mselog[i], 2)}")
     # Plot the line
     #ax.plot([0, 5], [b, 5*m+b], color='red', linewidth=2)
     print(i)
 
-ani = FuncAnimation(fig, animate_frame, frames=3000, interval=50, repeat=False)
+ani = FuncAnimation(fig, animate_frame, frames=3000, interval=1, repeat=False)
 plt.show()
