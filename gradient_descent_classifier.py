@@ -16,7 +16,7 @@ weights = [np.random.uniform(0,1) for i in range(len(vars))]
 print(weights)
 
 class gradient_descent:
-    def __init__(self, weights, vars, labels, lr=.05, epochs=1000):
+    def __init__(self, weights, vars, labels, lr=.01, epochs=1000):
         self.vars = vars
         self.weights = weights
         self.labels = labels

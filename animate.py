@@ -1,25 +1,19 @@
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import numpy as np
 
-# Class with function to animate a graph
+fig = plt.figure()
+ax = plt.axes(projection='3d')
 
-class Animate:
-    def __init__(self, points_x, points_y, max_x, max_y):
-        self.points_x = points_x
-        self.points_y = points_y
-        self.max_x = max_x
-        self.max_y = max_y
-        self.fig, self.ax = plt.subplots()
-    def animate_frame(self):
-        self.ax.clear()
-        self.ax.set_xlim([0, self.max_x])
-        self.ax.set_ylim([0, self.max_y])
-        self.ax.plot(self.points_x, self.points_y)
-        # Plot the line
-        self.ax.plot([0, self.max_x], [self.b, self.max_x*self.m+self.b], color='red', linewidth=2)
-    def start_animation(self, m, b):
-        self.m = m
-        self.b = b
-        ani = FuncAnimation(self.fig, self.animate_frame, frames=1000, interval=500, repeat=False)
-        plt.show()
+x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+y = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+z = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+def animate_frame(i):
+    ax.clear()
+    ax.scatter3D(x, y, z, c='r', marker='o')
+
+ani = FuncAnimation(fig, animate_frame, frames=30, interval=1, repeat=False)
+
+plt.show()
 

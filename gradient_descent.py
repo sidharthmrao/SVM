@@ -2,6 +2,8 @@ import numpy as np
 from random import uniform
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from PIL import Image
+import imageio
 
 # TODO Add Least Squares Regression to this
 
@@ -57,14 +59,14 @@ class gradient_descent:
         return self.m, self.b, self.logs, self.mselog, self.mselog[-1]
 
 # BATCH
-X = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
+x = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
 y = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
 
 # STOCHASTIC
-# X = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=2)
+# x = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=2)
 # y = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
 
-pointsx = X
+pointsx = x
 pointsy = y
 print(pointsx)
 print(pointsy)
@@ -87,21 +89,44 @@ plt.axis([-2, 6, -2, 6])
 plt.show()
 """
 
-fig, ax = plt.subplots()
+# fig, ax = plt.subplots()
 
 
-def animate_frame(i):
-    ax.clear()
-    ax.set_xlim([-2.5, 7.5])
-    ax.set_ylim([-2.5, 7.5])
-    ax.plot(pointsx, pointsy, 'bo')
-    for line in logs[:i]:
-        plotmb(line[0], line[1], ax, alpha=.9, color='red', linewidth=.3)
-    plotmb(logs[i][0], logs[i][1], ax, color='red', linewidth=2)
-    ax.set_xlabel(f"M: {round(logs[i][0], 2)} B: {round(logs[i][1], 2)} Loss: {round(mselog[i], 2)}")
-    # Plot the line
-    #ax.plot([0, 5], [b, 5*m+b], color='red', linewidth=2)
-    print(i)
+# def animate_frame(i):
+#     ax.clear()
+#     ax.set_xlim([-2.5, 7.5])
+#     ax.set_ylim([-2.5, 7.5])
+#     ax.plot(pointsx, pointsy, 'bo')
+#     for line in logs[:i]:
+#         plotmb(line[0], line[1], ax, alpha=.9, color='red', linewidth=.3)
+#     plotmb(logs[i][0], logs[i][1], ax, color='red', linewidth=2)
+#     ax.set_xlabel(f"M: {round(logs[i][0], 2)} B: {round(logs[i][1], 2)} Loss: {round(mselog[i], 2)}")
+#     # Plot the line
+#     #ax.plot([0, 5], [b, 5*m+b], color='red', linewidth=2)
+#     print(i)
 
-ani = FuncAnimation(fig, animate_frame, frames=3000, interval=1, repeat=False)
-plt.show()
+# ani = FuncAnimation(fig, animate_frame, frames=3000, interval=1, repeat=False)
+# plt.show()
+
+images = []
+for i in range(300):
+    if i % 10 == 0:
+        fig = plt.figure(figsize = (10,10))
+        ax = fig.add_subplot(111)
+        ax.scatter(x, y , c='r', marker='o')
+        ax.set_xlim([-2.5, 12])
+        ax.set_ylim([-2.5, 12])
+        
+        for line in logs[:i]:
+            plotmb(line[0], line[1], ax, alpha=.9, color='red', linewidth=.2)
+        plotmb(logs[i][0], logs[i][1], ax, color='red', linewidth=2)
+
+        ax.set_xlabel(f"M: {round(logs[i][0], 2)} B: {round(logs[i][1], 2)} Loss: {round(mselog[i], 2)} Iteration = {i}")
+        print(i)
+
+        fname = 'tmp/tmp%03d.png' % i
+        fig.savefig(fname)
+        images.append(Image.open(fname))
+imageio.mimsave('animation2d.gif', images)
+
+print("Complete")
