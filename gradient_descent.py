@@ -5,8 +5,6 @@ from matplotlib.animation import FuncAnimation
 from PIL import Image
 import imageio
 
-# TODO Add Least Squares Regression to this
-
 class gradient_descent:
     def __init__(self, x: np.array, y, lr=.1, epochs=3000):
         self.x = x

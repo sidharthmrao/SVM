@@ -70,9 +70,9 @@ class gradient_descent:
 # x = np.array([1, 7, 11, 3, 2, 5, 5, 5, 0, -2, -4, 2, 3, 4.5, 2.3, 1.2])
 # y = np.array([-2, -1, 0, 1, 2, 1, 0, -1, -2, -1, 0, 1, 2, 1, 0, -1])
 # z = np.array([7.2, 7.3, 7.4, 8.1, 8.5, 8.9, 9.1, 9.5, 9.9, 2, 3, 4, 10.2, 10.5, 11.5, 12])
-x = np.array([1,2.3,3,4,5,6,8,8,5,10])
-y = np.array([1,3.2,3,4,5,6.5,6,8,4,10])
-z = np.array([1,7,3,4,5,6,2,8,3,10])
+x = np.array([1,2,3,4,5,6,7,8,9,10])
+y = np.array([1,2,3,4,5,6,7,8,9,10])
+z = np.array([1,2,3,4,5,6,7,8,9,10])
 
 # STOCHASTIC
 # x = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=2)
@@ -138,7 +138,7 @@ ax = plt.axes(projection='3d')
 
 images = []
 for i in range(1500):
-    if i%50 == 0:
+    if i%1499 == 0:
         fig = plt.figure(figsize = (10,10))
         ax = fig.add_subplot(111, projection='3d')
         ax.scatter3D(x, y, z, c='r', marker='o')
