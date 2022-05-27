@@ -6,12 +6,13 @@ from PIL import Image
 import imageio
 
 class gradient_descent:
-    def __init__(self, x: np.array, y, lr=.1, epochs=3000):
+    def __init__(self, x: np.array, y, lr=.1, epochs=3000, mode="BATCH"):
         self.x = x
         self.y = y
         self.n = len(x)
         self.lr = lr
         self.epochs = epochs
+        self.mode = mode
         self.m = uniform(0, 1)
         self.b = uniform(0, 1)
         self.m = 5
@@ -33,36 +34,40 @@ class gradient_descent:
         for i in range(self.epochs):
             
             # BATCH
-            predicted_y = [self.funct(x) for x in self.x]
-            self.m -= self.lr * self.MSE_M(self.x, self.y, predicted_y)
-            self.b -= self.lr * self.MSE_B(self.x, self.y, predicted_y)
+            if self.mode == "batch":
+                predicted_y = [self.funct(x) for x in self.x]
+                self.m -= self.lr * self.MSE_M(self.x, self.y, predicted_y)
+                self.b -= self.lr * self.MSE_B(self.x, self.y, predicted_y)
 
-            self.logs.append((self.m, self.b))
-            self.mselog.append(self.MSE(self.x, self.y, predicted_y))
+                self.logs.append((self.m, self.b))
+                self.mselog.append(self.MSE(self.x, self.y, predicted_y))
             
-            #STOCHASTIC
-            # sample_size = .1
+            # STOCHASTIC
+            else:
+                sample_size = .1
 
-            # selected_x_index = np.random.choice(self.n, int(self.n*sample_size), replace=True)
-            # selected_x = [self.x[i] for i in selected_x_index]
-            # selected_y = [self.y[i] for i in selected_x_index]
-            # predicted_y = [self.funct(x) for x in selected_x]
-            # self.m -= self.lr * self.MSE_M(selected_x, selected_y, predicted_y)
-            # self.b -= self.lr * self.MSE_B(selected_x, selected_y, predicted_y)
-            # self.logs.append((self.m, self.b))
-            # self.mselog.append(self.MSE(selected_x, selected_y, predicted_y))
+                selected_x_index = np.random.choice(self.n, int(self.n*sample_size), replace=True)
+                selected_x = [self.x[i] for i in selected_x_index]
+                selected_y = [self.y[i] for i in selected_x_index]
+                predicted_y = [self.funct(x) for x in selected_x]
+                self.m -= self.lr * self.MSE_M(selected_x, selected_y, predicted_y)
+                self.b -= self.lr * self.MSE_B(selected_x, selected_y, predicted_y)
+                self.logs.append((self.m, self.b))
+                self.mselog.append(self.MSE(selected_x, selected_y, predicted_y))
             
 
             
         return self.m, self.b, self.logs, self.mselog, self.mselog[-1]
 
 # BATCH
-x = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
-y = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
+if self.mode == "batch":
+    x = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
+    y = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
 
 # STOCHASTIC
-# x = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=2)
-# y = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
+else:
+    x = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=2)
+    y = np.array(sorted(list(range(5))*20)) + np.random.normal(size=100, scale=.5)
 
 pointsx = x
 pointsy = y
